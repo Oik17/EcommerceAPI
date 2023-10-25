@@ -55,3 +55,7 @@ async function uploadSeller(req,res){
     console.log(err);
   }
 }
+
+module.exports={
+  uploadSeller
+}
