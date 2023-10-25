@@ -6,9 +6,7 @@ const sellerSchema = new mongoose.Schema({
   imageUrl: {type: String},
   description: {type: String, required: true},
   price: {type: Number, required: true},
-
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "user" ,required: true},
-  
-});
+  //user: { type: mongoose.Schema.Types.ObjectId, ref: "user"},
+  });
 
 module.exports = mongoose.model("seller", sellerSchema);

@@ -1,6 +1,7 @@
 const { S3Client , PutObjectCommand } = require("@aws-sdk/client-s3");
 const dotenv=require('dotenv');
 const crypto=require('crypto');
+const seller=require("../models/sellerSchema")
 
 dotenv.config()
 
@@ -35,24 +36,20 @@ async function uploadSeller(req,res){
     const command = new PutObjectCommand(params);
     await s3.send(command);
     const imageUrl = `https://s3-${bucketRegion}.amazonaws.com/${params.Bucket}/${params.Key}`;
-    
-    const user_email = await user.findOne({"email":req.user.email});
-    console.log(user_email)
-    const up= await uploads.create({
-        text: req.body.text,
+    console.log(imageUrl);
+    const up= await seller.create({
+        item: req.body.text,
         imageUrl: imageUrl,
-        user: user_email._id
+        description: req.body.description,
+        price: req.body.price,
+
     })
     await up.save();
     console.log(up)
-    const User=await user.findById(user_email._id)
-    if (!User.blogs.includes(up)){
-      User.blogs.push(up)
-    }
-    await User.save();
     return res.status(201).send(imageUrl);
   } catch(err){
-    console.log(err);
+    console.log(err)
+    res.send(err);
   }
 }
 
